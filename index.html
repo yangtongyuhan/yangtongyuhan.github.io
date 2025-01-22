@@ -1,20 +1,42 @@
 <!DOCTYPE html>
-<hemlt>
+<html>
     <head>
-        <title>my first html page</title>
-        <script>
-            function myFunction() {
-                var inputValue = document.getElementById("one").value;
-                alert(inputValue)
+        <title>welcome</title>>
+        <meta charset="UTF-8">
+        <style>
+            body{
+                background-image: url("背景图1.png");
+                background-size: cover;
+                background-attachment: fixed;
+                display: flex;
             }
-        </script>
+            #myButton{
+                background-color: rgb(7, 4, 67);
+                color: white;
+                padding:30px 64px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 32px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border: none;
+                border-radius: 4px;
+                opacity: 0.2;
+                position: absolute;
+                top:200px;
+                left:50%;
+                transform: translate(-50%, -50%);
+            }
+            #myButton:hover{
+                color: rgb(6, 138, 145);
+                opacity: 1;
+            }
+        </style>
     </head>
     <body>
-        <h1>hi</h1>
-        <p>hi</p>
-        <img src="https://cdn.pixabay.com/photo/2018/08/14/13/23/ocean-3605547_640.jpg" \>
-        <p></p>
-        <input id="one" type="text" name="input1" value=""  \>
-        <button onclick="myFunction()">click me</button>
+        <div>
+            <button id="myButton" onclick="window.location.href='./one.html'">Next</button>>
+        </div>
     </body>
-</hemlt>
+</html>
