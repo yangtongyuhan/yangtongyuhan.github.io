@@ -1,42 +1,346 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>welcome</title>
-        <meta charset="UTF-8">
-        <style>
-            body{
-                background-image: url("背景图1.png");
-                background-size: cover;
-                background-attachment: fixed;
-                display: flex;
-            }
-            #myButton{
-                background-color: rgb(7, 4, 67);
-                color: white;
-                padding:30px 64px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 32px;
-                margin: 4px 2px;
-                cursor: pointer;
-                border: none;
-                border-radius: 4px;
-                opacity: 0.2;
-                position: absolute;
-                top:200px;
-                left:50%;
-                transform: translate(-50%, -50%);
-            }
-            #myButton:hover{
-                color: rgb(6, 138, 145);
-                opacity: 1;
-            }
-        </style>
-    </head>
-    <body>
-        <div>
-            <button id="myButton" onclick="window.location.href='./1.html'">Next</button>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>生日快乐</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        .page-container {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide-page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .page1 {
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .page2 {
+            top: 0;
+            left: 0;
+            background: linear-gradient(135deg, #2c3e50, #4a148c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translateX(100%);
+            position: relative;
+        }
+
+        #fireworks {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .content {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+        }
+
+        .title {
+            font-size: 48px;
+            color: #ffd700;
+            text-shadow: 0 0 10px #ff6b9d, 0 0 20px #ff6b9d;
+            margin-bottom: 30px;
+        }
+
+        .name {
+            font-size: 56px;
+            color: #fff;
+            text-shadow: 0 0 15px #ffd700, 0 0 30px #ff6b9d;
+            margin: 25px 0;
+            font-weight: bold;
+        }
+
+        .wish {
+            font-size: 26px;
+            color: #f0f0f0;
+            line-height: 1.8;
+            margin-top: 20px;
+        }
+
+        .switch-btn {
+            margin-top: 40px;
+            padding: 15px 40px;
+            font-size: 22px;
+            background: linear-gradient(45deg, #ff6b9d, #ffd700);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 107, 157, 0.5);
+            transition: transform 0.3s;
+        }
+
+        .switch-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            padding: 12px 35px;
+            font-size: 20px;
+            background: linear-gradient(45deg, #ffd700, #ff6b9d);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            transition: transform 0.3s;
+            z-index: 20;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .cube-container {
+            perspective: 1000px;
+            width: 300px;
+            height: 300px;
+            position: relative;
+        }
+
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            cursor: grab;
+        }
+
+        .cube:active {
+            cursor: grabbing;
+        }
+
+        .cube-face {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            object-fit: cover;
+        }
+
+        .front  { transform: rotateY(0deg) translateZ(150px); }
+        .back   { transform: rotateY(180deg) translateZ(150px); }
+        .left   { transform: rotateY(-90deg) translateZ(150px); }
+        .right  { transform: rotateY(90deg) translateZ(150px); }
+        .top    { transform: rotateX(90deg) translateZ(150px); }
+        .bottom { transform: rotateX(-90deg) translateZ(150px); }
+
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page-container">
+        <div class="slide-page page1" id="page1">
+            <div id="fireworks"></div>
+            <div class="content">
+                <div class="title">🎉 生日快乐 🎉</div>
+                <div class="name" id="name">黄冬晴</div>
+                <div class="wish">
+                    愿你岁岁常欢愉，年年皆胜意<br>
+                    平安喜乐，万事顺遂，一生被爱
+                </div>
+                <button class="switch-btn" onclick="switchPage()">点击查看惊喜 →</button>
+            </div>
         </div>
-    </body>
+
+        <div class="slide-page page2" id="page2">
+            <button class="back-btn" onclick="switchPage()">← 返回祝福页</button>
+            <div class="cube-container">
+                <div class="cube" id="cube">
+                    <div class="cube-face front" style="background-image: url('https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/6dca98b24b1741b9b3b9b5e44e9db9d2.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=l%2FRh7A5sq3ZlSgA7FmED22oi6JE%3D');"></div>
+                    <div class="cube-face back" style="background-image: url('https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/2fb3da2494c04367a81e749d8032861e.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=j9LfGty8Eux9vJowiZjbfE0vNYs%3D');"></div>
+                    <div class="cube-face left" style="background-image: url('https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/8735b3a3cdff444bae1d4e818b4f54f0.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=RfsNjp7s4ajNwq7iuT%2BJcJOuWG4%3D');"></div>
+                    <div class="cube-face right" style="background-image: url('https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/543a6760ec10461486df0c88e3c72955.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=3LBuzwzFMrkqxdVLHPGMIpaHJHs%3D');"></div>
+                    <div class="cube-face top" style="background-image: url('https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/7ffddf3f319a47bdb62ff2e2981cdd93.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=vQL0IrlOauu%2BgoSipQycMxOvmXE%3D');"></div>
+                    <div class="cube-face bottom" style="background-image: url('https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/cce0f438b0784af5b01df19cc6b80b8f.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=xF%2FJCpWGQckHcq%2BCUI6mTmkuXUk%3D');"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio autoplay loop id="music">
+        <source src="https://cdn.jsdelivr.net/gh/volantis-x/cdn-media/music/happy-birthday.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const myName = "黄冬晴";
+        document.getElementById("name").innerText = myName;
+
+        let isPage2 = false;
+        function switchPage() {
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
+            
+            if (!isPage2) {
+                page1.style.transform = "translateX(-100%)";
+                page2.style.transform = "translateX(0)";
+            } else {
+                page1.style.transform = "translateX(0)";
+                page2.style.transform = "translateX(100%)";
+            }
+            isPage2 = !isPage2;
+        }
+
+        const cube = document.getElementById('cube');
+        let isDragging = false;
+        let startX, startY;
+        let rotateY = 0, rotateX = 0;
+
+        cube.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX;
+            startY = e.clientY;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            rotateY += dx * 0.5;
+            rotateX -= dy * 0.5;
+            rotateX = Math.max(-85, Math.min(85, rotateX));
+            cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            startX = e.clientX;
+            startY = e.clientY;
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        document.getElementById('fireworks').appendChild(canvas);
+
+        class Firework {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.sx = Math.random() * 2 - 1;
+                this.sy = Math.random() * -3 - 3;
+                this.size = 2;
+                this.hit = false;
+                this.particles = [];
+            }
+            update() {
+                this.x += this.sx;
+                this.y += this.sy;
+                this.sy += 0.02;
+                if (this.sy >= 0 && !this.hit) {
+                    this.hit = true;
+                    for (let i = 0; i < 60; i++) {
+                        this.particles.push(new Particle(this.x, this.y));
+                    }
+                }
+            }
+            draw() {
+                ctx.globalAlpha = 1;
+                ctx.fillStyle = '#ffd700';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x; this.y = y;
+                this.sx = Math.random() * 4 - 2;
+                this.sy = Math.random() * 4 - 2;
+                this.size = Math.random() * 2;
+                this.alpha = 1;
+                this.decay = 0.01;
+                this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+            }
+            update() {
+                this.x += this.sx;
+                this.y += this.sy;
+                this.alpha -= this.decay;
+            }
+            draw() {
+                ctx.globalAlpha = this.alpha;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        let fireworks = [];
+        setInterval(() => fireworks.push(new Firework()), 700);
+
+        function loop() {
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.globalCompositeOperation = 'lighter';
+
+            fireworks.forEach((f, i) => {
+                f.update(); f.draw();
+                f.particles.forEach((p, j) => {
+                    p.update(); p.draw();
+                    if (p.alpha <= 0) f.particles.splice(j, 1);
+                });
+                if (f.hit && f.particles.length === 0) fireworks.splice(i, 1);
+            });
+            requestAnimationFrame(loop);
+        }
+        loop();
+
+        window.addEventListener('click', () => {
+            document.getElementById('music').play();
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => document.getElementById('music').play(), 500);
+        });
+    </script>
+</body>
 </html>
