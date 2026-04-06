@@ -41,11 +41,15 @@
             top: 0;
             left: 0;
             background: linear-gradient(135deg, #2c3e50, #4a148c);
+            transform: translateX(100%);
+            position: relative;
+            padding: 40px;
+            overflow: hidden;
+            /* 3D 环境 */
+            perspective: 1200px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transform: translateX(100%);
-            position: relative;
         }
 
         #fireworks {
@@ -125,51 +129,68 @@
             transform: scale(1.05);
         }
 
-        .cube-container {
-            perspective: 1000px;
-            width: 300px;
-            height: 300px;
+        audio {
+            display: none;
+        }
+
+        /* ===================== 魔方样式 ===================== */
+        .cube-box {
             position: relative;
-        }
-
-        .cube {
-            width: 100%;
-            height: 100%;
-            position: absolute;
+            width: 420px;
+            height: 420px;
+            /* 开启 3D */
             transform-style: preserve-3d;
-            transition: transform 0.5s;
-            cursor: grab;
+            /* 自动旋转动画 */
+            animation: cubeRotate 18s linear infinite;
         }
 
-        .cube:active {
-            cursor: grabbing;
-        }
-
+        /* 魔方六个面 */
         .cube-face {
             position: absolute;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 2px solid #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 100%;
+            height: 100%;
+            /* 照片覆盖裁剪 */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            /* 轻微边框增强质感 */
+            border: 2px solid #fff;
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-            object-fit: cover;
         }
 
-        .front  { transform: rotateY(0deg) translateZ(150px); }
-        .back   { transform: rotateY(180deg) translateZ(150px); }
-        .left   { transform: rotateY(-90deg) translateZ(150px); }
-        .right  { transform: rotateY(90deg) translateZ(150px); }
-        .top    { transform: rotateX(90deg) translateZ(150px); }
-        .bottom { transform: rotateX(-90deg) translateZ(150px); }
+        /* 前面 */
+        .face1 {
+            transform: translateZ(210px);
+        }
+        /* 后面 */
+        .face2 {
+            transform: rotateY(180deg) translateZ(210px);
+        }
+        /* 左面 */
+        .face3 {
+            transform: rotateY(-90deg) translateZ(210px);
+        }
+        /* 右面 */
+        .face4 {
+            transform: rotateY(90deg) translateZ(210px);
+        }
+        /* 上面 */
+        .face5 {
+            transform: rotateX(90deg) translateZ(210px);
+        }
+        /* 下面 */
+        .face6 {
+            transform: rotateX(-90deg) translateZ(210px);
+        }
 
-        audio {
-            display: none;
+        /* 3D 旋转动画 */
+        @keyframes cubeRotate {
+            0% {
+                transform: rotateX(0deg) rotateY(0deg);
+            }
+            100% {
+                transform: rotateX(360deg) rotateY(720deg);
+            }
         }
     </style>
 </head>
@@ -191,15 +212,15 @@
 
         <div class="slide-page page2" id="page2">
             <button class="back-btn" onclick="switchPage()">← 返回祝福页</button>
-            <div class="cube-container">
-                <div class="cube" id="cube">
-                    <div class="cube-face front" style="background-image: url('https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/6dca98b24b1741b9b3b9b5e44e9db9d2.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=l%2FRh7A5sq3ZlSgA7FmED22oi6JE%3D');"></div>
-                    <div class="cube-face back" style="background-image: url('https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/2fb3da2494c04367a81e749d8032861e.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=j9LfGty8Eux9vJowiZjbfE0vNYs%3D');"></div>
-                    <div class="cube-face left" style="background-image: url('https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/8735b3a3cdff444bae1d4e818b4f54f0.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=RfsNjp7s4ajNwq7iuT%2BJcJOuWG4%3D');"></div>
-                    <div class="cube-face right" style="background-image: url('https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/543a6760ec10461486df0c88e3c72955.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=3LBuzwzFMrkqxdVLHPGMIpaHJHs%3D');"></div>
-                    <div class="cube-face top" style="background-image: url('https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/7ffddf3f319a47bdb62ff2e2981cdd93.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=vQL0IrlOauu%2BgoSipQycMxOvmXE%3D');"></div>
-                    <div class="cube-face bottom" style="background-image: url('https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/cce0f438b0784af5b01df19cc6b80b8f.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=xF%2FJCpWGQckHcq%2BCUI6mTmkuXUk%3D');"></div>
-                </div>
+            
+            <!-- 3D 魔方 -->
+            <div class="cube-box">
+                <div class="cube-face face1"></div>
+                <div class="cube-face face2"></div>
+                <div class="cube-face face3"></div>
+                <div class="cube-face face4"></div>
+                <div class="cube-face face5"></div>
+                <div class="cube-face face6"></div>
             </div>
         </div>
     </div>
@@ -213,6 +234,8 @@
         document.getElementById("name").innerText = myName;
 
         let isPage2 = false;
+
+        // 页面切换
         function switchPage() {
             const page1 = document.getElementById('page1');
             const page2 = document.getElementById('page2');
@@ -227,33 +250,23 @@
             isPage2 = !isPage2;
         }
 
-        const cube = document.getElementById('cube');
-        let isDragging = false;
-        let startX, startY;
-        let rotateY = 0, rotateX = 0;
+        // 自动把6张图片贴到魔方6个面
+        const imgList = [
+            "https://p26-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/6dca98b24b1741b9b3b9b5e44e9db9d2.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=l%2FRh7A5sq3ZlSgA7FmED22oi6JE%3D",
+            "https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/2fb3da2494c04367a81e749d8032861e.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=j9LfGty8Eux9vJowiZjbfE0vNYs%3D",
+            "https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/8735b3a3cdff444bae1d4e818b4f54f0.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=RfsNjp7s4ajNwq7iuT%2BJcJOuWG4%3D",
+            "https://p3-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/543a6760ec10461486df0c88e3c72955.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=3LBuzwzFMrkqxdVLHPGMIpaHJHs%3D",
+            "https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/7ffddf3f319a47bdb62ff2e2981cdd93.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=vQL0IrlOauu%2BgoSipQycMxOvmXE%3D",
+            "https://p11-flow-imagex-download-sign.byteimg.com/tos-cn-i-a9rns2rl98/cce0f438b0784af5b01df19cc6b80b8f.jpg~tplv-a9rns2rl98-24:720:720.jpg?lk3s=8e244e95&rcl=20260406143217E451BD44E3320B4C6A4E&rrcfp=8a172a1a&x-expires=1776061937&x-signature=xF%2FJCpWGQckHcq%2BCUI6mTmkuXUk%3D"
+        ];
 
-        cube.addEventListener('mousedown', (e) => {
-            isDragging = true;
-            startX = e.clientX;
-            startY = e.clientY;
+        // 赋值到魔方
+        const faces = document.querySelectorAll('.cube-face');
+        faces.forEach((face, index) => {
+            face.style.backgroundImage = `url(${imgList[index]})`;
         });
 
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-            rotateY += dx * 0.5;
-            rotateX -= dy * 0.5;
-            rotateX = Math.max(-85, Math.min(85, rotateX));
-            cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            startX = e.clientX;
-            startY = e.clientY;
-        });
-
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-        });
-
+        // 烟花效果
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
@@ -335,11 +348,18 @@
         }
         loop();
 
+        // 音乐播放
         window.addEventListener('click', () => {
             document.getElementById('music').play();
         });
         document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => document.getElementById('music').play(), 500);
+        });
+
+        // 窗口适配
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         });
     </script>
 </body>
